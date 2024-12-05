@@ -9,33 +9,37 @@ class EventDispatcherEPoll : public QAbstractEventDispatcher {
 	Q_OBJECT
 public:
 	explicit EventDispatcherEPoll(QObject* parent = 0);
-	virtual ~EventDispatcherEPoll(void);
+    virtual ~EventDispatcherEPoll(void) override;
 
-	virtual bool processEvents(QEventLoop::ProcessEventsFlags flags);
-	virtual bool hasPendingEvents(void);
+    virtual bool processEvents(QEventLoop::ProcessEventsFlags flags) override;
+    virtual bool hasPendingEvents(void);
 
-	virtual void registerSocketNotifier(QSocketNotifier* notifier);
-	virtual void unregisterSocketNotifier(QSocketNotifier* notifier);
+    virtual void registerSocketNotifier(QSocketNotifier* notifier) override;
+    virtual void unregisterSocketNotifier(QSocketNotifier* notifier) override;
 
 	virtual void registerTimer(
 		int timerId,
-		int interval,
+#if QT_VERSION >= 0x060000
+        qint64 interval,
+#elif QT_VERSION >= 0x050000
+        int interval,
+#endif
 #if QT_VERSION >= 0x050000
 		Qt::TimerType timerType,
 #endif
 		QObject* object
-	);
+    ) override;
 
-	virtual bool unregisterTimer(int timerId);
-	virtual bool unregisterTimers(QObject* object);
-	virtual QList<QAbstractEventDispatcher::TimerInfo> registeredTimers(QObject* object) const;
+    virtual bool unregisterTimer(int timerId) override;
+    virtual bool unregisterTimers(QObject* object) override;
+    virtual QList<QAbstractEventDispatcher::TimerInfo> registeredTimers(QObject* object) const override;
 #if QT_VERSION >= 0x050000
-	virtual int remainingTime(int timerId);
+    virtual int remainingTime(int timerId) override;
 #endif
 
-	virtual void wakeUp(void);
-	virtual void interrupt(void);
-	virtual void flush(void);
+    virtual void wakeUp(void) override;
+    virtual void interrupt(void) override;
+    virtual void flush(void);
 
 private:
 	Q_DISABLE_COPY(EventDispatcherEPoll)
