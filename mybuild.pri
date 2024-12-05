@@ -1,3 +1,5 @@
+QT += network
+
 HEADERS  += \
 $$PWD/src/eventdispatcher_epoll.h \
 $$PWD/src/eventdispatcher_epoll_p.h \
