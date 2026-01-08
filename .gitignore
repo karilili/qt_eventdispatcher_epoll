@@ -5,6 +5,8 @@
 build*/
 *.pro.user*
 .qtc_clangd/
+.qtcreator*/
+
 *.a
 *.o
 *.moc
